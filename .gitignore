@@ -1,3 +1,6 @@
+# ignoring the giant pickle (1.08 GB)
+data.pickle
+
 # config file
 config.py
 
