@@ -16,7 +16,7 @@ def evaluation(y_test, y_pred):
     
     
 # from sklearn
-def plot_roc_curve(y_test, y_pred):
+def plot_roc_curve(y_test, y_pred, figname='roc_curve'):
     # Compute ROC curve and ROC area for each class
     fpr = dict()
     tpr = dict()
@@ -39,7 +39,9 @@ def plot_roc_curve(y_test, y_pred):
     plt.ylabel('True Positive Rate')
     plt.title('Receiver operating characteristic example')
     plt.legend(loc="lower right")
+    plt.savefig(figname, dpi=300)
     plt.show()
+    
 
 # directly taken from sklearn documentation
 def plot_confusion_matrix(y_true, y_pred, classes,
@@ -94,7 +96,7 @@ def plot_confusion_matrix(y_true, y_pred, classes,
     fig.tight_layout()
     return ax
 
-def plt_cm(y_test, y_pred):
+def plt_cm(y_test, y_pred, figname='confusion_matrix'):
     
     # Plot non-normalized confusion matrix
     plot_confusion_matrix(y_test, y_pred, classes=['non-ballet', 'ballet'],
@@ -104,4 +106,6 @@ def plt_cm(y_test, y_pred):
     plot_confusion_matrix(y_test, y_pred, classes=['non-ballet', 'ballet'], normalize=True,
                           title='Normalized confusion matrix')
 
+    plt.savefig(figname, dpi=300)
     plt.show()
+    
