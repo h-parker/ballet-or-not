@@ -53,11 +53,11 @@ I began by creating two playlists on Spotify -- one playlist had about 1,000 bal
 ### Interesting Findings <a name="interestingfindings"></a>
 When initially exploring the data, I really wanted danceability to matter, even though I knew Spotify's measure is probably more suited to disco and salsa danceability. Nevertheless, I plotted it, and thought it might be interesting to others. Below is the graph of the distributions of danceability for ballet pieces and non-ballet pieces. You can see that the distributions are _slightly_ different, with the distribution of ballet pieces shifter more to the right, towards the 'more danceable' end of the spectrum, but not quite enough to emphatically declare that there is a significant difference.  
 
-![danceability distribution](https://github.com/h-parker/ballet-or-not/blob/master/danceability_dist.png "danceability distribution")
+![danceability distribution](https://github.com/h-parker/ballet-or-not/blob/master/Images/danceability_dist.png "danceability distribution")
 
 Then, while looking at other distributions, I came across a feature with a difference in distribution that felt exciting -- valence! As you can see, there is a significant different in both the shape and center of the distributions of valance for ballet and non-ballet pieces. While both are right-skewed, the tail of non-ballet songs is much skinnier, and the peak is much taller. Thus, we conclude that non-ballet songs tend to evoke more negative emotions, whereas the emotion of ballet songs is more evenly spread (even though there are still more negatively evocotive ballet songs). 
 
-![valance distribution](https://github.com/h-parker/ballet-or-not/blob/master/valance_dist.png "valance distribution")
+![valance distribution](https://github.com/h-parker/ballet-or-not/blob/master/Images/valance_dist.png "valance distribution")
 
 ### Feature Engineering <a name="featureengineering"></a>
 I introduced a number of different aggregations of the data on the sections and segments, as the ways of parsing apart and boiling down the songs using this data were endless. I created the following new features:
@@ -81,8 +81,8 @@ However, later I did think hard about what these features told me, and if I coul
 ### Choosing the Model <a name="choosingthemodel"></a>
 Logistic regression, KNN, Random Forest, SVM, and XGBoost were all considered, and performed very similarly. After parameter tuning through grid search, the top 3 contenders were Random Forest, SVM, and XGBoost. These the top three based on accuracy, AUC-ROC, and F1 score, since I wanted to capture the model to penalize false positives and false negatives roughly equally. In the end, I chose Random Forest because it was a good balance of accuracy and interpretability -- SVM and XGBoost only performed slightly better, while failing to be interpretable. The Random Forest ended up with 82% accuracy, with an F1 score of 82% as well, which were both only 1% lower than SVM and XGBoost's respective metrics. The confusion matrix and ROC curve are shown below. 
 
-![confusion matrix](https://github.com/h-parker/ballet-or-not/blob/master/rf_cm.png)
-![roc curve](https://github.com/h-parker/ballet-or-not/blob/master/rf_roccurve.png)
+![confusion matrix](https://github.com/h-parker/ballet-or-not/blob/master/Images/rf_cm.png)
+![roc curve](https://github.com/h-parker/ballet-or-not/blob/master/Images/rf_roccurve.png)
 
 ### Interpretation of the Model's Feature Importance <a name="interpretation"></a>
 When looking at the bar chart of feature importance, below, we can see that the top 5 most important features are:
@@ -92,14 +92,14 @@ When looking at the bar chart of feature importance, below, we can see that the 
 4. Acousticness
 5. Mean pitch
 
-![feature importance barchart](https://github.com/h-parker/ballet-or-not/blob/master/rf_feature_importance.png "feature importance")
+![feature importance barchart](https://github.com/h-parker/ballet-or-not/blob/master/Images/rf_feature_importance.png "feature importance")
 
 When I see this, it appears to me that the model captures the story element of ballet pieces -- the number of sections and segments increase with ballet pieces, as the story progresses, since you're constantly shifting perspective from one character to the next, watching plot twists unfold, seeing the introduction of new characters, and these are all revealed both visually and musically. Each of these plot points sound distinctly different, and they need to -- as an audience, we wouldn't understand what was going on if they didn't! My interpretation of the mean pitch also supports my idea of story, since I would imagine that the mean of the pitches would be higher in songs with obvious stories, since a story is often told through a range of pitches. Thus, the mean would be brought up by a higher value in each position in the column vector. 
 
 ### What the Model Got Wrong <a name="whatitgotwrong"></a>
 In an effort to improve my model, I wanted to see what it was getting wrong. Since Spotify doesn't have genres associated with their songs (only with artists, which wouldn't be helpful, since an artist like "Evergreen Symphony" may play all sorts of classical music, and I wanted just the subgenre of a particular song), I webscraped Last.fm to get the user generated tags for each piece that was misclassified. Then, I plotted the frequency of each tag.
 
-![misclassified tags](https://github.com/h-parker/ballet-or-not/blob/master/top_misclassified_genres.png "bar chart of frequency of tags of misclassified songs")
+![misclassified tags](https://github.com/h-parker/ballet-or-not/blob/master/Images/top_misclassified_genres.png "bar chart of frequency of tags of misclassified songs")
 
 Above, we can see that the top 10 genres (ignoring tags like "composer" that are not indicative of the subgenre) are
 - Romantic
@@ -115,8 +115,8 @@ Above, we can see that the top 10 genres (ignoring tags like "composer" that are
 
 I would've expected the classifier to correctly classify more unique-sounding music, such as Baroque, since Baroque music is really not 'balletic' (which I know from my own domain knowledge). So, I looked at the breakdown of misclassified data by ballet/non-ballet:
 
-![misclassified non-ballets](https://github.com/h-parker/ballet-or-not/blob/master/top_nb_misclassified_genres.png "distribution of tags of misclassified non-ballets")
-![misclassified ballets](https://github.com/h-parker/ballet-or-not/blob/master/top_b_misclassified_genres.png "distribution of tags of misclassified ballets")
+![misclassified non-ballets](https://github.com/h-parker/ballet-or-not/blob/master/Images/top_nb_misclassified_genres.png  "distribution of tags of misclassified non-ballets")
+![misclassified ballets](https://github.com/h-parker/ballet-or-not/blob/master/Images/top_b_misclassified_genres.png "distribution of tags of misclassified ballets")
 
 However, even still, this wasn't particularly illuminating! It still seems that it slipped up on somewhat obvious songs! I expected orchestral pieces to be the number one genre misclassified as a ballet. I'm thinking that maybe it could be more illuminating if I maintained the groupings (since songs has multiple tags, and maybe they say more together), or if I found another source? An exploration for another day!
 
