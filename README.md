@@ -142,4 +142,4 @@ Though my classifier was not completely accurate, I'm not too upset! Through pla
 - Explore more deeply the distributions of the features that were the most importance and try and get a better grasp on why they matter so much and what they might tell us about the characteristics ballet pieces
   - I feel the worst about not spending more time on this! With only a week, I got so focused on creating a strong classifier that I lost sight of my focus -- I definitely will remember this trap in my next project.
  - Inspect the features that seem most important to PCA and feature regularization (for logistic regression)
-  - I didn't get to spend nearly as much time as I would've liked on this, which I regret for the same reasons as above. 
+   - I didn't get to spend nearly as much time as I would've liked on this, which I regret for the same reasons as above. 
